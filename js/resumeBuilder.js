@@ -6,31 +6,34 @@ var bio={"name":"Pedro Montero",
 		 "role": "Second Level Support",
 		 "contact": {
 		 				"mobile":"620901387",
-		 				"email":"mntr.pedro@gmail.com"
+		 				"email":"mntr.pedro@gmail.com",
+		 				"github":"https://github.com/prunk1al"
 		 			},
 		 "welcome":"Welcome to my Bio",
-		 "skills":["Windows","Linux","IANUS","SQL","Python","Multibase"]};
+		 "image":"images/me.png",
+		 "skills":["Windows","Linux","IANUS","SQL","Python","Multibase"]
+		 };
 
 var work={
 	"works":[
 		{
 			"position":"Second Level Support",
 			"years":"2015",
-			"city":"Santiago de Compostela",
+			"location":"Santiago de Compostela",
 			"employer":"everis",
 			"description":"Technical support, data explotation, IANUS coordinator, SIHGA developer"
 		},
 		{
 			"position":"Second Level Support",
 			"years":"2014-2015",
-			"city":"Santiago de Compostela",
+			"location":"Santiago de Compostela",
 			"employer":"Zemsania",
 			"description":""
 		}
 	]};
 
 var education={
-	"schools":[
+	"school":[
 		{"name":"IES Armando Cotarelo",
 		 "year":"2001-2003",
 		 "degree":"Tecnico en Administación de Sistemas Informáticos",
@@ -38,13 +41,14 @@ var education={
 		 "city":"Vilagarcía de Arousa"
 		}],
 
-	"onlineCourses":[	
+	"online":[	
 		{
 			"name":"Udacity",
 			"year":2015,
 			"degree":"JavaScript Basics",
 			"majors":"JavaScript"
 		}
+	
 	]
 };
 
@@ -53,13 +57,22 @@ var project={
 		{
 			"title":"yourlastube",
 			"dates":"2013",
-			"description":"Music Video web aplication over GAE"
+			"description":"Music Video web aplication over GAE",
+			"image":"images/ylt.png",
+			"url":"http://www.yourlastube.com"
 	}]
 };
 
+//$("#header").prepend(HTMLwelcomeMsg.replace("%data%",bio.welcome));
+$("#header").prepend(HTMLbioPic.replace("%data%",bio.image));
+$("#header").prepend(HTMLheaderRole.replace("%data%",bio.role));
+$("#header").prepend(HTMLheaderName.replace("%data%",bio.name));
 
-$("#header").prepend(HTMLheaderRole.replace("%data%",bio.role))
-$("#header").prepend(HTMLheaderName.replace("%data%",bio.name))
+
+for (tipe in bio.contact){
+	$("#topContacts").append(this.window["HTML"+tipe].replace("%data%",bio.contact[tipe]));
+}
+
 
 
 if(bio.skills.length>0){
@@ -81,23 +94,37 @@ function displayWork(){
 }
 
 
-function inName(){
-	var arrayName=name.split(" ");
-	var first=arrayName[0][0].toUpperCase()+arrayName[0].slice(1).toLowerCase();
-	var second=arrayName[1].toUpperCase();
-	return first + " " + second;
-}
-var name = $("#name").text();
-
-//$("#main").append(internationalizeButton);
 
 project.display=function(){
 	for(i in project["projects"]){
 		$("#projects").append(HTMLprojectStart)
-		$(".project-entry:last").append(HTMLprojectTitle.replace("%data%",project.projects[i].title))
+		$(".project-entry:last").append(HTMLprojectTitle.replace("%data%",project.projects[i].title).replace("#",project.projects[i].url))
 		$(".project-entry:last").append(HTMLprojectDates.replace("%data%",project.projects[i].dates))
 		$(".project-entry:last").append(HTMLprojectDescription.replace("%data%",project.projects[i].description))
+		$(".project-entry:last").append(HTMLprojectImage.replace("%data%",project.projects[i].image))
 	}
 }
 
+education.display=function(){
+	for(tipe in education){
+		if (tipe==="school"){
+			
+			for(i in education[tipe]){
+				$("#education").append(HTMLschoolStart);
+				$(".education-entry:last").append(HTMLschoolName.replace("%data%",education.school[i].name));
+			}
+		}
+		if (tipe==="online"){
+			$("#education").append(HTMLonlineClasses);
+			for(i in education[tipe]){
+				$("#education").append(HTMLschoolStart);
+				$(".education-entry:last").append(HTMLonlineTitle.replace("%data%",education.online[i].name));
+			}
+		}
+	}
+
+}
+
+education.display()
 project.display();
+displayWork();
