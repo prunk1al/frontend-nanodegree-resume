@@ -33,7 +33,7 @@ var work={
 	]};
 
 var education={
-	"school":[
+	"schools":[
 		{"name":"IES Armando Cotarelo",
 		 "year":"2001-2003",
 		 "degree":"Tecnico en Administación de Sistemas Informáticos",
@@ -107,11 +107,15 @@ project.display=function(){
 
 education.display=function(){
 	for(tipe in education){
-		if (tipe==="school"){
+		if (tipe==="schools"){
 			
 			for(i in education[tipe]){
 				$("#education").append(HTMLschoolStart);
-				$(".education-entry:last").append(HTMLschoolName.replace("%data%",education.school[i].name));
+				$(".education-entry:last").append(HTMLschoolName.replace("%data%",education.schools[i].name))
+				$(".education-entry:last").append(HTMLschoolDegree.replace("%data%",education.schools[i].degree))
+				$(".education-entry:last").append(HTMLschoolDates.replace("%data%",education.schools[i].year))
+				$(".education-entry:last").append(HTMLschoolMajor.replace("%data%",education.schools[i].majors))
+				$(".education-entry:last").append(HTMLschoolLocation.replace("%data%",education.schools[i].city))
 			}
 		}
 		if (tipe==="online"){
