@@ -10,7 +10,7 @@ var bio={"name":"Pedro Montero",
 		 				"github":"https://github.com/prunk1al"
 		 			},
 		 "welcome":"Welcome to my Bio",
-		 "image":"images/me.png",
+		 "image":"images/me.jpg",
 		 "skills":["Windows","Linux","IANUS","SQL","Python","Multibase"]
 		 };
 
@@ -48,6 +48,41 @@ var education={
 			"degree":"JavaScript Basics",
 			"majors":"JavaScript",
 			"url":"https://www.udacity.com/course/javascript-basics--ud804"
+		},
+		{
+			"name":"Udacity",
+			"dates":2015,
+			"degree":"Intro to AJAX",
+			"majors":"ajax",
+			"url":"https://www.udacity.com/course/intro-to-ajax--ud110"
+		},
+		{
+			"name":"Udacity",
+			"dates":2015,
+			"degree":"Intro to JQuery",
+			"majors":"JQuery",
+			"url":"https://www.udacity.com/course/intro-to-jquery--ud245"
+		},
+		{
+			"name":"Udacity",
+			"dates":2012,
+			"degree":"Intro to Computer Science	",
+			"majors":"Python",
+			"url":"https://www.udacity.com/course/intro-to-computer-science--cs101"
+		},
+		{
+			"name":"Udacity",
+			"dates":2013,
+			"degree":"Web Development",
+			"majors":"Python, Google App Engine",
+			"url":"hhttps://www.udacity.com/course/web-development--cs253"
+		},
+		{
+			"name":"Udacity",
+			"dates":2013,
+			"degree":"Intro to Java Programming",
+			"majors":"Java",
+			"url":"https://www.udacity.com/course/intro-to-java-programming--cs046"
 		}
 	
 	]
@@ -121,15 +156,19 @@ education.display=function(){
 		}
 		if (tipe==="online"){
 			$("#education").append(HTMLonlineClasses);
+			
+
 			for(i in education[tipe]){
-				$("#education").append(HTMLschoolStart);
 				
-				title=HTMLonlineTitle.replace("%data%",education.online[i].degree)+HTMLonlineSchool.replace("%data%",education.online[i].name);
+				$("#education").append(HTMLschoolStart);
+
+				
+				title=HTMLonlineTitle.replace("%data%",education.online[i].degree).replace("#",education.online[i].url)+HTMLonlineSchool.replace("%data%",education.online[i].name);
 
 				$(".education-entry:last").append(title);
 				$(".education-entry:last").append(HTMLonlineDates.replace("%data%",education.online[i].dates));
-				$(".education-entry:last").append(HTMLonlineURL.replace("%data%",education.online[i].url));
-				
+				//$(".education-entry:last").append(HTMLonlineURL.replace("%data%",education.online[i].url));
+				$(".education-entry:last").append("<br>");		
 			}
 		}
 	}
