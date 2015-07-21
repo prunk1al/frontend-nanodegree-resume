@@ -44,9 +44,10 @@ var education={
 	"online":[	
 		{
 			"name":"Udacity",
-			"year":2015,
+			"dates":2015,
 			"degree":"JavaScript Basics",
-			"majors":"JavaScript"
+			"majors":"JavaScript",
+			"url":"https://www.udacity.com/course/javascript-basics--ud804"
 		}
 	
 	]
@@ -122,7 +123,13 @@ education.display=function(){
 			$("#education").append(HTMLonlineClasses);
 			for(i in education[tipe]){
 				$("#education").append(HTMLschoolStart);
-				$(".education-entry:last").append(HTMLonlineTitle.replace("%data%",education.online[i].name));
+				
+				title=HTMLonlineTitle.replace("%data%",education.online[i].degree)+HTMLonlineSchool.replace("%data%",education.online[i].name);
+
+				$(".education-entry:last").append(title);
+				$(".education-entry:last").append(HTMLonlineDates.replace("%data%",education.online[i].dates));
+				$(".education-entry:last").append(HTMLonlineURL.replace("%data%",education.online[i].url));
+				
 			}
 		}
 	}
