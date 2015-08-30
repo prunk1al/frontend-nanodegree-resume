@@ -1,0 +1,50 @@
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<table id="table">
+	</table>
+	<script type="text/javascript">
+
+	var dsv = d3.dsv(";", "text/plain");
+
+	dsv("https://test-prunk1al.c9.io/static/prealta.csv", function(d) {
+		  return {
+		    idCambio: d.ID_CAMBIO,
+		    idIngreso:d.ID_INGRESO, // convert "Year" column to Date
+		    servicio: d.ID_SERVICIO, 
+		    fechaPrealta: d.FECHA_PREALTA,
+		    horaPrealta:d.HORA_PREALTA,
+		    hora: d.HORA
+		    
+		  };
+		}, function(error, rows) {
+			var $table=$("#table");
+		  	var datos=d3.nest()
+		  				.key(function(d){return d.servicio}).sortKeys(d3.ascending)
+		  				.key(function(d){return d.hora})
+		  				.rollup(function(leaves){ return leaves.length; })
+		  				.map(rows)
+		  	console.log(datos)
+			for (servicio in datos){
+				if (!("ANTES 12:30" in datos[servicio])){
+					datos[servicio]["ANTES 12:30"]=0
+				}
+				if (!("DESPUES 12:30" in datos[servicio])){
+					datos[servicio]["DESPUES 12:30"]=0
+				}
+				var total=datos[servicio]["ANTES 12:30"]+datos[servicio]["DESPUES 12:30"]
+				var antes=Math.round(datos[servicio]["ANTES 12:30"]*100/total)
+				var despues=Math.round(datos[servicio]["DESPUES 12:30"]*100/total)
+
+					$table.append("<tr><td>"+servicio+"</td><td>"+antes+"%</td><td>"+despues+"%</td>");
+			  }
+
+		});
+
+		
+
+	</script>
+</body>

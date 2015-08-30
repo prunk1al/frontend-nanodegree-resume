@@ -1,0 +1,60 @@
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<table id="table">
+	</table>
+	<script type="text/javascript">
+
+	var dsv = d3.dsv(";", "text/plain");
+
+	dsv("https://test-prunk1al.c9.io/static/tiempomedio.csv", function(d) {
+		  return {
+		    fecha: d.FECHA_SOLING.slice(0,10),
+		    servicio:d.SERVICIO_INGRESO, // convert "Year" column to Date
+		    espera: d.TIEMPO_ESPERA
+		  };
+		}, function(error, rows) {
+			var $table=$("#table");
+		  	var datos=d3.nest()
+		  				.key(function(d){return d.fecha}).sortKeys(d3.ascending)
+		  				.key(function(d){return d.servicio})
+		  				.rollup(function(leaves){ return {promedio:d3.sum(leaves, function(d){return d.espera})/leaves.length}})
+		  				.entries(rows)
+
+		  	console.log(datos)
+		  	for (i in datos){
+		  		day=datos[i].values;
+		  		console.log(datos[i].key)
+		  		var sorted=day.sort(function(a,b){  
+		  			return d3.descending(a.values.promedio, b.values.promedio)})
+		  		for(x in day){
+		  			console.log(day[x])
+		  		}
+		  	}
+		  	/*for (i in datos){
+		  		console.log(i)
+		  		var fecha=i;
+		  		console.log(fecha)
+		  		var servicios=datos[i];
+		  		for ( var servicio in servicios){
+		  			var totalSec=servicios[servicio].promedio
+		  			console.log(servicio)
+		  			console.log(totalSec)
+		  			var minutes = parseInt( totalSec / 60 ) % 60;
+					var seconds = parseInt(totalSec % 60, 10);
+					var result = minutes  + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+
+					console.log(result)
+
+		  		}
+		  	}*/
+			
+		});
+
+		
+
+	</script>
+</body>

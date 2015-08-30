@@ -1,0 +1,75 @@
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<table id="table">
+	</table>
+	<script type="text/javascript">
+
+	var data;
+	d3.csv("https://test-prunk1al.c9.io/static/ocupacion.csv", function(d) {
+		  return {
+		    inicio: d.FEC_INICIO,
+		    fin:d.FEC_FIN, // convert "Year" column to Date
+		    id: d.ID_OCUPACION, 
+		    sala: d.SALA,
+		    salaDesc:d.SALA_DESCRIPCION,
+		    numincu: d.NUMICU,
+		    diaOcupacion: d.DIA_OCUPACION.split("/").join("-")//new Date(+"20"+d.DIA_OCUPACION.split('/')[2],+d.DIA_OCUPACION.split('/')[1],+d.DIA_OCUPACION.split('/')[0])
+		  };
+		}, function(error, rows) {
+			console.log(rows)
+			var $table=$("#table");
+
+			var dates=d3.nest()
+		  				.key(function(d){return d.diaOcupacion}).sortKeys(d3.ascending)
+		  				.rollup(function(leaves){ return leaves.length })
+		  				.map(rows)
+		  	console.log(dates)
+
+		  	for( var d in sortObject(dates)){
+		  		console.log(d)
+		  		$table.append("<div id="+d+"></div>");
+		  		$("#"+d).append("<tr style='background-color: SkyBlue'><td>"+d+"</td><td>"+dates[d]+"</td><td>"+(Math.round(dates[d]/24*100)/100).toString().replace('.',',')+"</td></tr>")
+		  	}
+		  	
+
+		  	var datos=d3.nest()
+		  				.key(function(d){return d.diaOcupacion}).sortKeys(d3.ascending)
+		  				.key(function(d){return d.salaDesc}).sortKeys(d3.ascending)
+		  				.rollup(function(leaves){ return leaves.length; })
+		  				.map(rows)
+		  	 
+		  
+			for (fechas in datos){
+				for (tipo in datos[fechas]){
+					$("#"+fechas).append("<tr><td>"+tipo+"</td><td>"+datos[fechas][tipo]+"</td><td>"+(Math.round(datos[fechas][tipo]/24*100)/100).toString().replace('.',',')+"</td></tr>");
+
+				}
+	
+			  }
+
+		});
+
+		function sortObject(o) {
+		    var sorted = {},
+		    key, a = [];
+
+		    for (key in o) {
+		        if (o.hasOwnProperty(key)) {
+		            a.push(key);
+		        }
+		    }
+
+		    a.sort();
+
+		    for (key = 0; key < a.length; key++) {
+		        sorted[a[key]] = o[a[key]];
+		    }
+		    return sorted;
+		}
+
+	</script>
+</body>
